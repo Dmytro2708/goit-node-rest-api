@@ -9,9 +9,6 @@ const app = express();
 
 const contactsRouter = require("./routes/contactsRouter.js");
 
-// const DB_HOST =
-//   "mongodb+srv://Dmytro2708:IRKXrgZC3f9yqE2I@cluster0.vbt9nua.mongodb.net";
-
 mongoose
   .connect(DB_HOST)
   .then(() => {
