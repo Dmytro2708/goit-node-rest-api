@@ -1,17 +1,22 @@
-const contactServices = require("../services/contactsServices.js");
+// const contactServices = require("../services/contactsServices.js");
+
+const { Contact } = require("../db/contact.js");
 
 const HttpError = require("../helpers/HttpError.js");
 
 const ctrlWrapper = require("../helpers/ctrlWrapper.js");
 
+
+
 const getAllContacts = async (req, res) => {
-  const result = await contactServices.listContacts();
+  const result = await Contact.find();
   res.json(result);
 };
 
+
 const getOneContact = async (req, res) => {
   const { id } = req.params;
-  const result = await contactServices.getContactById(id);
+  const result = await Contact.findById(id);
   if (!result) {
     throw HttpError(404);
   }
@@ -20,7 +25,7 @@ const getOneContact = async (req, res) => {
 
 const deleteContact = async (req, res) => {
   const { id } = req.params;
-  const result = await contactServices.removeContact(id);
+  const result = await Contact.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404);
   }
@@ -28,17 +33,26 @@ const deleteContact = async (req, res) => {
 };
 
 const createContact = async (req, res) => {
-   const result = await contactServices.addContact(req.body);
+   const result = await Contact.create(req.body);
   res.status(201).json(result);
 };
 
 const updateContact = async (req, res) => {
    const { id } = req.params;
-  const result = await contactServices.updateContact(id, req.body);
+  const result = await Contact.findByIdAndUpdate(id, req.body, {new: true});
   if (!result) {
     throw HttpError(404);
   }
   res.json(result);
+};
+
+const updateStatusContact = async (req, res) => {
+  const { id } = req.params;
+ const result = await Contact.findByIdAndUpdate(id, req.body, {new: true});
+ if (!result) {
+   throw HttpError(404);
+ }
+ res.json(result);
 };
 
 module.exports = {
@@ -47,4 +61,5 @@ module.exports = {
   deleteContact: ctrlWrapper(deleteContact),
   createContact: ctrlWrapper(createContact),
   updateContact: ctrlWrapper(updateContact),
+  updateStatusContact: ctrlWrapper(updateStatusContact),
 };

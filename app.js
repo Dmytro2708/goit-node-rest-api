@@ -2,10 +2,9 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
+require("dotenv").config();
 
-dotenv.config();
-const { DB_HOST } = process.env;
+const { DB_HOST, PORT = 3000 } = process.env;
 
 const app = express();
 
@@ -15,7 +14,7 @@ mongoose
   .connect(DB_HOST)
   .then(() => {
     console.log("Database connection successful");
-    app.listen(3000);
+    app.listen(PORT);
   })
   .catch((error) => {
     console.log(error.message);
