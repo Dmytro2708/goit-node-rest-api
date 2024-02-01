@@ -11,9 +11,7 @@ const {
 
 const res = require("express/lib/response.js");
 
-const validateBody = require("../helpers/validateBody.js");
-
-const isValidId = require("../helpers/isValidId.js");
+const {validateBody, isValidId} = require("../middlewares");
 
 const { schemas } = require("../db/contact.js");
 
