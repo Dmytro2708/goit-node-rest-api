@@ -11,33 +11,33 @@ const {
 
 const res = require("express/lib/response.js");
 
-const {validateBody, isValidId} = require("../middlewares");
+const {validateBody, isValidId, authenticate} = require("../middlewares");
 
-const { schemas } = require("../db/contact.js");
+const { schemas } = require("../models/contact.js");
 
 const contactsRouter = express.Router();
 
-contactsRouter.get("/", getAllContacts);
+contactsRouter.get("/", authenticate, getAllContacts);
 
-contactsRouter.get("/:id", isValidId, getOneContact);
+contactsRouter.get("/:id", authenticate, isValidId, getOneContact);
 
-contactsRouter.delete("/:id", isValidId, deleteContact);
+contactsRouter.delete("/:id", authenticate, isValidId, deleteContact);
 
 contactsRouter.post(
-  "/",
+  "/", authenticate,
   validateBody(schemas.createContactSchema),
   createContact
 );
 
 contactsRouter.put(
-  "/:id",
+  "/:id", authenticate,
   isValidId,
   validateBody(schemas.updateContactSchema),
   updateContact
 );
 
 contactsRouter.patch(
-  "/:id/favorite",
+  "/:id/favorite", authenticate,
   isValidId,
   validateBody(schemas.updateFavoriteSchema),
   updateStatusContact
