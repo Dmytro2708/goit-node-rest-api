@@ -35,8 +35,6 @@ userSchema.post("save", hendleMongooseError);
 const registerSchema = joi.object({
   password: joi.string().min(4).required(),
   email: joi.string().pattern(emailRegexp).required(),
-  subscription: joi.string(),
-  token: joi.string(),
 });
 
 const loginSchema = joi.object({
