@@ -1,24 +1,32 @@
 const { Schema, model } = require("mongoose");
 const joi = require("joi");
 
-const hendleMongooseError = require("../helpers/hendleMongooseError");
+const { hendleMongooseError } = require("../helpers");
 
-const contactSchema = new Schema({
-  name: {
-    type: String,
-    required: [true, "Set name for contact"],
+const contactSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Set name for contact"],
+    },
+    email: {
+      type: String,
+    },
+    phone: {
+      type: String,
+    },
+    favorite: {
+      type: Boolean,
+      default: false,
+    },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "user",
+      required: true,
+    },
   },
-  email: {
-    type: String,
-  },
-  phone: {
-    type: String,
-  },
-  favorite: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { versionKey: false, timestamps: true }
+);
 
 contactSchema.post("save", hendleMongooseError);
 
@@ -37,18 +45,18 @@ const updateContactSchema = joi.object({
 });
 
 const updateFavoriteSchema = joi.object({
-   favorite: joi.boolean().required(),
+  favorite: joi.boolean().required(),
 });
 
 const schemas = {
   createContactSchema,
   updateContactSchema,
-  updateFavoriteSchema
-}
+  updateFavoriteSchema,
+};
 
 const Contact = model("contact", contactSchema);
 
 module.exports = {
   Contact,
-  schemas
+  schemas,
 };
