@@ -7,11 +7,11 @@ const {
   createContact,
   updateContact,
   updateStatusContact,
-} = require("../controllers/contactsControllers.js");
+} = require("../controllers/contacts");
 
 const res = require("express/lib/response.js");
 
-const {validateBody, isValidId, authenticate} = require("../middlewares");
+const { validateBody, isValidId, authenticate } = require("../middlewares");
 
 const { schemas } = require("../models/contact.js");
 
@@ -24,20 +24,23 @@ contactsRouter.get("/:id", authenticate, isValidId, getOneContact);
 contactsRouter.delete("/:id", authenticate, isValidId, deleteContact);
 
 contactsRouter.post(
-  "/", authenticate,
+  "/",
+  authenticate,
   validateBody(schemas.createContactSchema),
   createContact
 );
 
 contactsRouter.put(
-  "/:id", authenticate,
+  "/:id",
+  authenticate,
   isValidId,
   validateBody(schemas.updateContactSchema),
   updateContact
 );
 
 contactsRouter.patch(
-  "/:id/favorite", authenticate,
+  "/:id/favorite",
+  authenticate,
   isValidId,
   validateBody(schemas.updateFavoriteSchema),
   updateStatusContact
