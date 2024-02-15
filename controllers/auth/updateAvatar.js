@@ -1,6 +1,7 @@
 const path = require("path");
 const fs = require("fs/promises");
 
+const { resizeAvatar } = require("../../middlewares")
 const { User } = require("../../models/user");
 const { ctrlWrapper } = require("../../helpers");
 
@@ -12,6 +13,7 @@ const updateAvatar = async (req, res) => {
     return res.status(400).json({ error: "File not found" });
     };
   const { path: tempUpload, originalname } = req.file;
+  await resizeAvatar(tempUpload);
   const filename = `${_id}_${originalname}`;
   const resultUpload = path.join(avatarsDir, filename);
   await fs.rename(tempUpload, resultUpload);
